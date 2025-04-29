@@ -3,7 +3,7 @@ import discord
 import re
 from typing import Optional
 from discord.ext import commands
-from modules import EmbedManager, bot
+from modules import EmbedManager
 
 logger = logging.getLogger(__name__)
 

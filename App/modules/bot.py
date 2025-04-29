@@ -6,10 +6,7 @@ from discord.ext import commands
 from discord import Message, Activity, ActivityType
 
 logger = logging.getLogger(__name__)
-
-with open("App/settings/bot.json", "r") as file:
-    data = json.load(file)
-    prefix = data["PREFIX"]
+prefix = "!"
 
 class Bot(commands.Bot):
     async def on_message(self, message: Message):
@@ -44,9 +41,8 @@ class Bot(commands.Bot):
 bot = Bot(command_prefix=prefix,
           self_bot=True,
           activity=Activity(type=ActivityType.playing,
-                            application_id=874575612075999272,
-                            name="MakeSelfBot",
-                            state="Idle"
+                            application_id=1163956401874403438,
+                            name="Mount & Blade II: Bannerlord"
                             ),
           help_command=None,
           status=discord.Status.idle)

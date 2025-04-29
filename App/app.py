@@ -1,17 +1,13 @@
-import json
+import os
 import asyncio
+from dotenv import load_dotenv
 from modules import bot, setup_logging, setup_cogs
-from settings.setup import setup_settings
-
+from time import sleep
 # Setup logging before main operations
-logger = setup_logging()
 
-with open("App/settings/bot.json", "r") as file:
-    if file:
-        data = json.load(file)
-        TOKEN = data["TOKEN"]
-    else:
-        setup_settings()
+logger = setup_logging()
+load_dotenv("App/.env")
+TOKEN=os.getenv("TOKEN")
 
 async def main():
     try:
@@ -40,6 +36,7 @@ if __name__ == "__main__":
     
     try:
         logger.info("Memulai loop utama")
+        sleep(0.2)
         loop.run_until_complete(main())
     except KeyboardInterrupt:
         logger.warning("Bot diberhentikan oleh user")

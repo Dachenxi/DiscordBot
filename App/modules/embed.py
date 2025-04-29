@@ -1,14 +1,15 @@
+import json
+import discord
+import re
+import os
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime, timezone
-import json
 from typing import List, Optional, Dict, Union
-import discord
 from discord.ext import commands
-import re
+from dotenv import load_dotenv
 
-with open("App/settings/url.json", "r") as file:
-    data = json.load(file)
-    webhook_url = data["WEBHOOK_URL"]
+load_dotenv("App/.env")
+webhook_url = os.getenv("WEBHOOK_URL")
 
 class EmbedManager:
     def __init__(self, bot: commands.Bot):

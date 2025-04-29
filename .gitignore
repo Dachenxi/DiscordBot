@@ -2,3 +2,6 @@ log
 *__pycache__
 App/settings/*.json
 docker*
+.venv
+*.env
+.dockerignore
