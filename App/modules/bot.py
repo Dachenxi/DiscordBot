@@ -41,8 +41,9 @@ class Bot(commands.Bot):
 bot = Bot(command_prefix=prefix,
           self_bot=True,
           activity=Activity(type=ActivityType.playing,
-                            application_id=1163956401874403438,
-                            name="Mount & Blade II: Bannerlord"
+                            application_id=688591619217293401,
+                            name="!help",
+                            state="Menonton"
                             ),
           help_command=None,
           status=discord.Status.idle)
