@@ -42,7 +42,7 @@ bot = Bot(command_prefix=prefix,
           self_bot=True,
           activity=Activity(type=ActivityType.playing,
                             application_id=688591619217293401,
-                            name="!help",
+                            name="Discord: Kikir Impact",
                             state="Menonton"
                             ),
           help_command=None,
