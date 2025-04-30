@@ -20,6 +20,7 @@ class Utilities(commands.Cog):
         """
         try:
             await message.channel.send("pong")
+            logger.info("Mengirim pong")
         except Exception as e:
             logger.warning(f"Kesalahan terjadi dengan error {e}")
 
@@ -112,13 +113,52 @@ class Utilities(commands.Cog):
             # Send the embed
             if embed is not None:
                 await embed.forward(ctx.channel)
+                logger.info("Mengirim \"User Information\"")
             else:
                 await ctx.channel.send("Failed to create embed.", delete_after=5)
+                logger.warning("Error ketika mengirim embed")
             
         except Exception as e:
             print(f"Error in me command: {e}")
             await ctx.send("An error occurred while fetching user info.", delete_after=5)
 
+    @commands.command(name="server")
+    async def server(self, message: commands.Context):
+        """
+        Digunakan untuk melihat informasi server
+        """
+        server = self.bot.get_guild(message.guild.id)
+        member = message.guild.get_member(message.author.id)
+        
+        title = f"Informasi Server {server.name}"
+        description = f"{server.description}"
+        fields = [
+            {"name": "Server ID", "value": str(server.id), "inline": True},
+            {"name": "Owner", "value": str(server.owner.name), "inline": True},
+            {"name": "Member Count", "value": str(server.member_count), "inline": True},
+            {"name": "Created At", "value": server.created_at.strftime("%Y-%m-%d %H:%M:%S"), "inline": True},
+            {"name": "Booster", "value": str(server.premium_subscription_count), "inline": True},
+            {"name": "Vanity URL", "value": server.vanity_url_code if server.vanity_url_code else "None", "inline": True}
+        ]
+        
+        embed = await self.embed.create_embed(
+            title=title,
+            description=description,
+            color=int(member.color.value) if member else 0x3498db,
+            fields=fields,
+            author={"name": server.name, "icon_url": server.icon.url if server.icon else ""},
+            footer={"text": f"Diminta Oleh {message.author.name}", "icon_url": message.author.avatar.url if message.author.avatar else ""},
+            thumbnail=server.icon.url if server.icon else ""
+        )
+        
+        if embed:
+            await embed.forward(message.channel)
+            logger.info("Mengirim \"Server Information\"")
+        else:
+            await message.channel.send("Failed to create embed.", delete_after=5)
+            logger.warning("Error ketika mengirim embed")
+        
+        
 async def setup(bot: commands.Bot):
     await bot.add_cog(Utilities(bot))
     logger.info("Utilies command berhasil di load")
