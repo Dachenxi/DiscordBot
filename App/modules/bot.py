@@ -1,12 +1,12 @@
 import logging
 import discord
-import json
 import asyncio
 from discord.ext import commands
 from discord import Message, Activity, ActivityType
+from modules.json_helper import get_value_json
 
 logger = logging.getLogger(__name__)
-prefix = "!"
+prefix = get_value_json("App/modules/settings/client.json", "prefix")
 
 class Bot(commands.Bot):
     async def on_message(self, message: Message):
@@ -34,16 +34,12 @@ class Bot(commands.Bot):
                             logger.info("Error ketika mencoba mengirim perintah")
                     else:
                         await message.reply("Tidak ada command dengan nama itu!")
-                except:
-                    logger.info(f"Error ketika memprosses pesan. Pesan yang diterima {message.content}")
+                except Exception as e:
+                    logger.info(f"Error ketika memprosses pesan. Pesan yang diterima {message.content} dengan error {e}")
 
 
 bot = Bot(command_prefix=prefix,
           self_bot=True,
-          activity=Activity(type=ActivityType.playing,
-                            application_id=688591619217293401,
-                            name="Discord: Kikir Impact",
-                            state="Menonton"
-                            ),
+          activity=Activity(type=ActivityType.custom, name="!help"),
           help_command=None,
           status=discord.Status.idle)
