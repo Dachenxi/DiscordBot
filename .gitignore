@@ -5,3 +5,4 @@ docker*
 .venv
 *.env
 .dockerignore
+.github

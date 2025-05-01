@@ -1,0 +1,21 @@
+{
+    "prefix":"!",
+    "default_status":"online",
+    "activity":{
+        "name":"Discord Bot",
+        "type":"playing",
+        "application_id":"688591619217293401",
+        "state":"Idling"
+    },
+    "help":[
+        {
+            "name":"help",
+            "description":"Memunculkan semua command yang tersedia."
+        },
+        {
+            "name":"ping",
+            "description":"Mengecek apakah bot merespon."
+        }
+
+    ]
+}
