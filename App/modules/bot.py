@@ -6,7 +6,7 @@ from discord import Message, Activity, ActivityType
 from modules.json_helper import get_value_json
 
 logger = logging.getLogger(__name__)
-prefix = get_value_json("App/modules/settings/client.json", "prefix")
+prefix = "!"
 
 class Bot(commands.Bot):
     async def on_message(self, message: Message):
