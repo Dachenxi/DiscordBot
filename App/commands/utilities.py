@@ -158,7 +158,25 @@ class Utilities(commands.Cog):
             await message.channel.send("Failed to create embed.", delete_after=5)
             logger.warning("Error ketika mengirim embed")
         
-        
+    @commands.command(name="getcompo")
+    async def getcompo(self, message: discord.Message, target: Optional[int] = None):
+        """
+        Get component from message
+        Usage: !getcompo [message_id]
+        """
+        try:
+            if target:
+                # Fetch the message by ID
+                target_message = await message.channel.fetch_message(target)
+            else:
+                target_message = await message.channel.fetch_message(message.reference.message_id)
+            
+            for component in target_message.components:
+                for row in component.children:
+                    print(row)
+        except Exception as e:
+            logger.warning(f"Terjadi kesalahan : {e}")
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(Utilities(bot))
     logger.info("Utilies command berhasil di load")
