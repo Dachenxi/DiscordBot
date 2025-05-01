@@ -7,7 +7,6 @@ from time import sleep
 logger = setup_logging()
 load_dotenv("App/.env")
 TOKEN = os.getenv("TOKEN")
-version = "1.0.1"
 
 async def run_bot():
     retries = 0
@@ -42,7 +41,6 @@ if __name__ == "__main__":
 
     try:
         logger.info("Memulai loop utama")
-        logger.warning(f"Versi docker {version}")
         sleep(0.2)
         loop.run_until_complete(run_bot())
     except KeyboardInterrupt:
