@@ -1,6 +1,7 @@
 import logging
 import discord
 import asyncio
+import random
 from discord.ext import commands, tasks
 from modules import EmbedManager
 
@@ -12,31 +13,37 @@ class VirtualFarmer(commands.Cog):
         self.embed = EmbedManager(self.bot)
         self._farm_current = 0
         self._farm_count = 0
-    @tasks.loop(seconds=3)
-    async def farm_loop(self, farm_button: discord.Button, sell_button: discord.Button):
+    
+    @tasks.loop(seconds=0)
+    async def farm_loop(self, delay, farm_button: discord.Button, sell_button: discord.Button):
         try:
             if self._farm_current >= self._farm_count:
+                self._farm_count = 0
                 self.farm_loop.cancel()
                 logger.warning("farm_loop sudah selesai")
                 return
-            elif (self._farm_current / 20) == 0:
+            
+            elif self._farm_current % 20 == 0:
                 logger.info(f"Farming {self._farm_current} dari {self._farm_count}")
+            
             else:
                 await farm_button.click()
-                await asyncio.sleep(0.2)
+                await asyncio.sleep(random.randint(1, 3))
                 await sell_button.click()
-                await asyncio.sleep(0.2)
+                await asyncio.sleep(random.randint(1, 3))
+                await asyncio.sleep(delay)
+            
             self._farm_current += 1
-        except Exception as e:
-            logger.warning(f"Ada kesalahan pada farm_loop: {e}")
-            await asyncio.sleep(2)
+        except Exception:
+            logger.exception(f"Error pada farm_loop: ")
+        
             
             
     
     @commands.command(name="farming")
-    async def farming(self, message: discord.Message, count: int):
+    async def farming(self, message: discord.Message, count: int, delay: int, message_id: str):
         try:
-            target_farm = await message.channel.fetch_message(message.reference.message_id)
+            target_farm = await message.channel.fetch_message(int(message_id))
             if not target_farm:
                 await message.channel.send("Tolong reply message embed dengan Farm dan Sell button", delete_after=2)
                 return
@@ -55,12 +62,14 @@ class VirtualFarmer(commands.Cog):
             if farm_button and sell_button:
                 self._farm_count = int(count)
                 self._farm_current = 0
-                self.farm_loop.start(farm_button, sell_button)
+                self.farm_loop.start(int(delay), farm_button, sell_button)
                 await message.channel.send(f"farm_loop dimulai dengan total {count} kali", delete_after=2)
-                logger.warning(f"farm_loop dimulai dengan total {count} kali")
+                logger.warning(f"farm_loop dimulai dengan total {count} kali dan delay {delay}")
+            
             else:
                 await message.channel.send("Terjadi kesalahan ketika ingin memulai darm loop", delete_after=2)
                 logger.warning("Terjadi kesalahan ketika ingin memulai darm loop")
+        
         except Exception as e:
             logger.error(f"Error pada command farm: {e}")
             
